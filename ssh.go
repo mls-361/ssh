@@ -73,11 +73,13 @@ func (c *Client) readKeyFile() (ssh.Signer, error) {
 	return ssh.ParsePrivateKey(buf)
 }
 
-func (c *Client) configure() (*ssh.ClientConfig, error) {
+func (c *Client) configure(logger logger.Logger) (*ssh.ClientConfig, error) {
 	auths := []ssh.AuthMethod{}
 
 	if c.options.Password != "" {
 		auths = append(auths, ssh.Password(c.options.Password))
+
+		logger.Trace("SSH") //AFAC
 	}
 
 	if c.options.KeyFile != "" {
@@ -101,7 +103,7 @@ func (c *Client) configure() (*ssh.ClientConfig, error) {
 
 // Connect AFAIRE.
 func (c *Client) Connect(logger logger.Logger) (*Connection, error) {
-	cfg, err := c.configure()
+	cfg, err := c.configure(logger)
 	if err != nil {
 		return nil, err
 	}
