@@ -7,6 +7,8 @@
 package ssh
 
 import (
+	"fmt"
+
 	"github.com/mls-361/failure"
 	"github.com/mls-361/logger"
 )
@@ -42,6 +44,8 @@ func (c Clients) Connect(host, username string, logger logger.Logger) (*Connecti
 				Set("user", username).
 				Msg("this SSH server or user does not exist") //////////////////////////////////////////////////////////
 	}
+
+	logger.Trace("SSH", "password", fmt.Sprintf("%#v", client.options.Password)) //AFAC
 
 	return client.Connect(logger)
 }

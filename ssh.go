@@ -18,6 +18,10 @@ import (
 	"golang.org/x/crypto/ssh"
 )
 
+const (
+	_defaultTimeout = 5 * time.Second
+)
+
 type (
 	// ClientOptions AFAIRE.
 	ClientOptions struct {
@@ -38,7 +42,7 @@ func (co *ClientOptions) NewClient() *Client {
 	}
 
 	if co.Timeout == 0 {
-		co.Timeout = 5 * time.Second
+		co.Timeout = _defaultTimeout
 	}
 
 	return &Client{options: co}
