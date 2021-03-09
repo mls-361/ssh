@@ -96,7 +96,7 @@ func (c *Client) configure() (*ssh.ClientConfig, error) {
 }
 
 // Connect AFAIRE.
-func (c *Client) Connect(logger *logger.Logger) (*Connection, error) {
+func (c *Client) Connect(logger logger.Logger) (*Connection, error) {
 	cfg, err := c.configure()
 	if err != nil {
 		return nil, err
@@ -119,7 +119,7 @@ func (c *Client) Connect(logger *logger.Logger) (*Connection, error) {
 type (
 	// Connection AFAIRE.
 	Connection struct {
-		logger *logger.Logger
+		logger logger.Logger
 		client *Client
 		ssh    *ssh.Client
 	}
@@ -201,7 +201,7 @@ type (
 	// Session AFAIRE.
 	Session struct {
 		*ssh.Session
-		logger *logger.Logger
+		logger logger.Logger
 		client *Client
 	}
 )

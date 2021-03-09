@@ -33,7 +33,7 @@ func NewClients(cos []*ClientOptions) Clients {
 }
 
 // Connect AFAIRE.
-func (c Clients) Connect(host, username string, logger *logger.Logger) (*Connection, error) {
+func (c Clients) Connect(host, username string, logger logger.Logger) (*Connection, error) {
 	client, ok := c[host][username]
 	if !ok {
 		return nil,
