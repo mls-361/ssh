@@ -76,6 +76,7 @@ func (c *Client) readKeyFile() (ssh.Signer, error) {
 func (c *Client) configure() (*ssh.ClientConfig, error) {
 	auths := []ssh.AuthMethod{}
 
+	// Nécessite "PasswordAuthentication yes" in /etc/ssh/sshd_config
 	if c.options.Password != "" {
 		auths = append(auths, ssh.Password(c.options.Password))
 	}
