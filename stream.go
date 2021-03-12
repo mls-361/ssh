@@ -24,14 +24,9 @@ type (
 )
 
 func (s *Stream) readData(timeout time.Duration, stderrScanner, stdoutScanner *bufio.Scanner) {
-	defer close(s.done)
-
-	defer close(s.stdout)
-	defer close(s.stderr)
-
-	defer s.session.Close()
-
 	stop := make(chan struct{}, 1)
+	defer close(stop)
+
 	group := sync.WaitGroup{}
 
 	group.Add(2)
@@ -101,6 +96,11 @@ func (s *Stream) Close() {
 	if s.stderr != nil {
 		close(s.stderr)
 		s.stderr = nil
+	}
+
+	if s.session != nil {
+		s.session.Close()
+		s.session = nil
 	}
 }
 
