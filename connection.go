@@ -64,15 +64,20 @@ func (conn *Connection) ReadStream(cmd string, timeout time.Duration) (*Stream, 
 
 	s := &Stream{
 		session: session,
+		stderr:  make(chan string),
+		stdout:  make(chan string),
+		done:    make(chan bool),
 	}
 
 	stdoutReader, err := session.StdoutPipe()
 	if err != nil {
+		s.Close()
 		return nil, err
 	}
 
 	stderrReader, err := session.StderrPipe()
 	if err != nil {
+		s.Close()
 		return nil, err
 	}
 
@@ -80,13 +85,9 @@ func (conn *Connection) ReadStream(cmd string, timeout time.Duration) (*Stream, 
 	stdoutScanner := bufio.NewScanner(io.MultiReader(stdoutReader))
 
 	if err := session.Start(cmd); err != nil {
+		s.Close()
 		return nil, err
 	}
-
-	s.stderr = make(chan string)
-	s.stdout = make(chan string)
-
-	s.done = make(chan bool)
 
 	go s.readData(timeout, stderrScanner, stdoutScanner) //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
