@@ -86,6 +86,24 @@ func (s *Stream) Err() error {
 	return s.err
 }
 
+// Close AFAIRE.
+func (s *Stream) Close() {
+	if s.done != nil {
+		close(s.done)
+		s.done = nil
+	}
+
+	if s.stdout != nil {
+		close(s.stdout)
+		s.stdout = nil
+	}
+
+	if s.stderr != nil {
+		close(s.stderr)
+		s.stderr = nil
+	}
+}
+
 /*
 ######################################################################################################## @(°_°)@ #######
 */
